@@ -11,7 +11,7 @@ namespace StarterAssets
 #endif
 	public class FirstPersonController : MonoBehaviour
 	{
-	
+
 
 
 		[Header("Player")]
@@ -73,7 +73,7 @@ namespace StarterAssets
 		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
-		
+
 		private bool IsCurrentDeviceMouse => _playerInput.currentControlScheme == "KeyboardMouse";
 
 		private void Awake()
@@ -102,10 +102,10 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 
-			
+
 		}
 
-	
+
 		private void LateUpdate()
 		{
 			CameraRotation();
@@ -125,7 +125,7 @@ namespace StarterAssets
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-				
+
 				_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
 				_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
 
@@ -253,5 +253,17 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
+
+		public bool gameOver = false;
+		
+		private void OnCollisionEnter(Collision collision)
+		{
+			if (collision.gameObject.CompareTag("Enemy"))
+			{
+				Debug.Log("Game Over!");
+				gameOver = true;
+			}
+		}
+
 	}
 }

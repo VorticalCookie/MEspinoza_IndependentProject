@@ -6,8 +6,12 @@ public class DetectCollisions : MonoBehaviour
 {
     private void OnTriggerEnter(Collider Other)
     {
-
-        Destroy(Other.gameObject);
-        Destroy(gameObject);
+        
+        if (Other.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Game Over!");
+            Destroy(Other.gameObject);
+            Destroy(gameObject);
+        }
     }
 }
