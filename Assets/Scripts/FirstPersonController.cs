@@ -12,6 +12,7 @@ namespace StarterAssets
 	public class FirstPersonController : MonoBehaviour
 	{
 
+		DetectCollisions detectCollisions;
 
 
 		[Header("Player")]
@@ -54,6 +55,7 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+	
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -83,6 +85,8 @@ namespace StarterAssets
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
+
+			detectCollisions = GameObject.Find("Enemy").GetComponent<DetectCollisions>();
 		}
 
 		private void Start()
@@ -102,6 +106,7 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 
+			
 
 		}
 
@@ -121,7 +126,8 @@ namespace StarterAssets
 		private void CameraRotation()
 		{
 			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold)
+			if (_input.look.sqrMagnitude >= _threshold && detectCollisions.gameOver == false) 
+			
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
@@ -158,7 +164,7 @@ namespace StarterAssets
 			float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
 
 			// accelerate or decelerate to target speed
-			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
+			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset )
 			{
 				// creates curved result rather than a linear one giving a more organic speed change
 				// note T in Lerp is clamped, so we don't need to clamp our speed
@@ -184,7 +190,13 @@ namespace StarterAssets
 			}
 
 			// move the player
-			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			if (detectCollisions.gameOver == false)
+			{
+
+				_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+			}
+			
 		}
 
 		private void JumpAndGravity()
@@ -201,7 +213,7 @@ namespace StarterAssets
 				}
 
 				// Jump
-				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+				if (_input.jump && _jumpTimeoutDelta <= 0.0f && detectCollisions.gameOver == false)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -254,16 +266,10 @@ namespace StarterAssets
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
 
-		public bool gameOver = false;
+
 		
-		private void OnCollisionEnter(Collision collision)
-		{
-			if (collision.gameObject.CompareTag("Enemy"))
-			{
-				Debug.Log("Game Over!");
-				gameOver = true;
-			}
-		}
+		
+		
 
 	}
 }

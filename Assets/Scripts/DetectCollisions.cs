@@ -4,14 +4,31 @@ using UnityEngine;
 
 public class DetectCollisions : MonoBehaviour
 {
+    public bool gameOver = false;
+    public GameObject GameOver;
+
+    void Start()
+
+    {
+        GameOver.SetActive(false);
+
+    }
     private void OnTriggerEnter(Collider Other)
     {
         
         if (Other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Game Over!");
+            Debug.Log("Enemy Killed!");
             Destroy(Other.gameObject);
             Destroy(gameObject);
+        }
+
+
+        if (Other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Game Over!");
+            gameOver = true;
+            GameOver.SetActive(true);
         }
     }
 }
