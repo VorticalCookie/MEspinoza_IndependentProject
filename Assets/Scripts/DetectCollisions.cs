@@ -7,6 +7,8 @@ public class DetectCollisions : MonoBehaviour
     public bool gameOver = false;
     public GameObject GameOver;
 
+    public ParticleSystem expSystem;
+
     void Start()
 
     {
@@ -21,6 +23,7 @@ public class DetectCollisions : MonoBehaviour
             Debug.Log("Enemy Killed!");
             Destroy(Other.gameObject);
             Destroy(gameObject);
+            expSystem.Play();
         }
 
 
