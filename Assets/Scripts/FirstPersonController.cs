@@ -14,6 +14,12 @@ namespace StarterAssets
 
 		DetectCollisions detectCollisions;
 
+	
+		
+		
+
+		
+		//
 
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
@@ -266,10 +272,11 @@ namespace StarterAssets
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
 
+		//Power Up
 
-		
-		
-		
+
+
+
 
 	}
 }

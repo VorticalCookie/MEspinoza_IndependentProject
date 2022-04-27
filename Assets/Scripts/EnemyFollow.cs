@@ -11,7 +11,7 @@ public class EnemyFollow : MonoBehaviour
     public Transform Player;
     
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
 
         detectCollisions = GameObject.Find("Enemy").GetComponent<DetectCollisions>();
@@ -21,11 +21,9 @@ public class EnemyFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (detectCollisions.gameOver == false)
-        {
-
+       
             enemy.SetDestination(Player.position);
 
-        }
+ 
     }
 }

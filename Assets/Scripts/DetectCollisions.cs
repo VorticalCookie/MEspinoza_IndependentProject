@@ -7,7 +7,9 @@ public class DetectCollisions : MonoBehaviour
     public bool gameOver = false;
     public GameObject GameOver;
 
-    public ParticleSystem expSystem;
+    public GameObject PowerUpIndicator;
+    bool hasPowerUp = false;
+
 
     void Start()
 
@@ -17,13 +19,13 @@ public class DetectCollisions : MonoBehaviour
     }
     private void OnTriggerEnter(Collider Other)
     {
-        
+
         if (Other.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Enemy Killed!");
             Destroy(Other.gameObject);
             Destroy(gameObject);
-            expSystem.Play();
+
         }
 
 
@@ -33,5 +35,21 @@ public class DetectCollisions : MonoBehaviour
             gameOver = true;
             GameOver.SetActive(true);
         }
+      
+        if (Other.CompareTag("PowerUp"))
+        {
+            hasPowerUp = true;
+            Destroy(Other.gameObject);
+            StartCoroutine(PowerUpCountdown());
+            PowerUpIndicator.SetActive(true);
+        }
+
+    }
+
+    IEnumerator PowerUpCountdown()
+    {
+        yield return new WaitForSeconds(8);
+        hasPowerUp = false;
+        PowerUpIndicator.SetActive(false);
     }
 }
