@@ -92,7 +92,7 @@ namespace StarterAssets
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
 
-			detectCollisions = GameObject.Find("Enemy").GetComponent<DetectCollisions>();
+			//detectCollisions = GameObject.Find("Enemy").GetComponent<DetectCollisions>();
 		}
 
 		private void Start()
@@ -132,7 +132,7 @@ namespace StarterAssets
 		private void CameraRotation()
 		{
 			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold && detectCollisions.gameOver == false) 
+			if (_input.look.sqrMagnitude >= _threshold) 
 			
 			{
 				//Don't multiply mouse input by Time.deltaTime
@@ -195,13 +195,13 @@ namespace StarterAssets
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 			}
 
-			// move the player
-			if (detectCollisions.gameOver == false)
-			{
+			
+			
+		
 
-				_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
-			}
+			
 			
 		}
 
@@ -219,7 +219,7 @@ namespace StarterAssets
 				}
 
 				// Jump
-				if (_input.jump && _jumpTimeoutDelta <= 0.0f && detectCollisions.gameOver == false)
+				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);

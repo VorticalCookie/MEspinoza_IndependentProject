@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -13,13 +14,18 @@ public class SpawnManager : MonoBehaviour
 
     private int enemyCount;
     private int waveNumber = 1;
-
+    public TextMeshProUGUI waveText;
     // Start is called before the first frame update
     void Start()
     {
 
         detectCollisions = GameObject.Find("Enemy").GetComponent<DetectCollisions>();
         SpawnWave(waveNumber);
+
+
+       
+        
+
     }
 
     // Update is called once per frame
@@ -30,9 +36,12 @@ public class SpawnManager : MonoBehaviour
         {
             waveNumber++;
             SpawnWave(waveNumber);
+            waveText.text = "Wave: " + waveNumber;
         }
 
     }
+
+  
 
     void SpawnWave(int enemyNum)
     {

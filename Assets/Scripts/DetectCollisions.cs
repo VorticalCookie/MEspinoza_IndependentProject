@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DetectCollisions : MonoBehaviour
 {
@@ -9,12 +11,16 @@ public class DetectCollisions : MonoBehaviour
 
     public GameObject PowerUpIndicator;
     bool hasPowerUp = false;
+    private GameManager gameManager;
+    public int pointValue;
 
+    public ParticleSystem expParticle;
 
     void Start()
-
     {
         GameOver.SetActive(false);
+        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
     private void OnTriggerEnter(Collider Other)
@@ -22,18 +28,21 @@ public class DetectCollisions : MonoBehaviour
 
         if (Other.gameObject.CompareTag("Enemy"))
         {
+
+          
             Debug.Log("Enemy Killed!");
             Destroy(Other.gameObject);
             Destroy(gameObject);
-
+          
         }
 
 
-        if (Other.gameObject.CompareTag("Player"))
+        if(Other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Game Over!");
             gameOver = true;
             GameOver.SetActive(true);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
       
         if (Other.CompareTag("PowerUp"))
